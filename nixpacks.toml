@@ -1,6 +1,7 @@
 [phases.setup]
 # Keep node aligned with your workspace engines (>=20).
-nixPkgs = ["nodejs-20_x"]
+# Nix package name (underscores, not dashes).
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = ["npm install"]
