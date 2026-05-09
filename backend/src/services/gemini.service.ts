@@ -56,7 +56,13 @@ export class GeminiService extends BaseService {
   private initialize(): void {
     try {
       this.client = new GoogleGenerativeAI(this.config.apiKey);
-      this.model = this.client.getGenerativeModel(this.config.model, {
+      const modelName =
+        (this.config.model && this.config.model.trim().length > 0
+          ? this.config.model
+          : process.env.GEMINI_MODEL) || 'gemini-1.5-pro';
+
+      this.model = this.client.getGenerativeModel({
+        model: modelName,
         generationConfig: {
           temperature: this.config.temperature,
           maxOutputTokens: this.config.maxOutputTokens,
@@ -64,10 +70,16 @@ export class GeminiService extends BaseService {
           topK: this.config.topK,
         },
       });
-      this.logInfo('Gemini service initialized successfully');
+
+      // Keep config in sync (useful for logging/diagnostics).
+      this.config.model = modelName;
+      this.logInfo('Gemini service initialized successfully', { model: modelName });
     } catch (error) {
       this.logError('Failed to initialize Gemini service', error);
-      throw error;
+      // Don't crash the whole API on boot if AI is misconfigured.
+      // The AI endpoints can return a controlled error instead.
+      this.client = null;
+      this.model = null;
     }
   }
 
