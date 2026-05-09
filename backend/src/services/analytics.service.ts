@@ -187,7 +187,7 @@ export interface CloseContestDetection {
     percentage_of_total: number;
     average_margin: number;
     most_competitive_region: string;
-  }>;
+  };
 }
 
 export interface RegionalAnalysis {

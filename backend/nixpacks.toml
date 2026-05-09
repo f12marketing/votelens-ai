@@ -5,7 +5,7 @@ nixPkgs = ["nodejs-18_x", "postgresql"]
 cmds = ["npm install", "npm run build"]
 
 [start]
-cmd = "node dist/app.js"
+cmd = "node dist/app/server.js"
 
 [variables]
 NODE_ENV = "production"

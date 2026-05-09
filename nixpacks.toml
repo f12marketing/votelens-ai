@@ -1,0 +1,17 @@
+[phases.setup]
+# Keep node aligned with your workspace engines (>=20).
+nixPkgs = ["nodejs-20_x"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+# Build only shared (backend runs via ts-node in production).
+cmds = ["npm run build --workspace=shared"]
+
+[start]
+# Uses the root "start" script which forwards to backend start:prod.
+cmd = "npm start"
+
+[variables]
+NODE_ENV = "production"
