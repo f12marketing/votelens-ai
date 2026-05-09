@@ -1,0 +1,296 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  firebaseUid       String    @unique
+  email             String    @unique
+  displayName       String?
+  photoURL          String?
+  role              Role      @default(USER)
+  organizationId    String?
+  organization      Organization? @relation(fields: [organizationId], references: [id])
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastLoginAt       DateTime?
+  isActive          Boolean   @default(true)
+  
+  createdElections  Election[] @relation("CreatedBy")
+  apiKeys           ApiKey[]
+  auditLogs         AuditLog[]
+  queryHistory      QueryHistory[]
+  
+  @@index([firebaseUid])
+  @@index([email])
+  @@index([organizationId])
+}
+
+model Organization {
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  logo          String?
+  plan          Plan      @default(FREE)
+  maxUsers      Int       @default(5)
+  maxElections  Int       @default(3)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  users         User[]
+  elections     Election[]
+  apiKeys       ApiKey[]
+  
+  @@index([slug])
+}
+
+model ApiKey {
+  id             String    @id @default(cuid())
+  name           String
+  key            String    @unique
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  scopes         String[]
+  lastUsedAt     DateTime?
+  expiresAt      DateTime?
+  createdAt      DateTime  @default(now())
+  
+  @@index([key])
+  @@index([userId])
+}
+
+model Election {
+  id              String    @id @default(cuid())
+  name            String
+  description     String?
+  electionType    ElectionType
+  date            DateTime
+  status          ElectionStatus @default(DRAFT)
+  country         String
+  region          String?
+  totalSeats      Int
+  totalVoters     Int?
+  turnout         Float?
+  createdBy       String
+  creator         User      @relation("CreatedBy", fields: [createdBy], references: [id])
+  organizationId  String?
+  organization    Organization? @relation(fields: [organizationId], references: [id])
+  datasetUrl      String?
+  datasetSize     Int?
+  processedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  constituencies  Constituency[]
+  results         Result[]
+  insights        Insight[]
+  datasets        Dataset[]
+  auditLogs       AuditLog[]
+  
+  @@index([status])
+  @@index([date])
+  @@index([country])
+  @@index([organizationId])
+}
+
+model Constituency {
+  id              String    @id @default(cuid())
+  name            String
+  code            String    @unique
+  electionId      String
+  election        Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  type            ConstituencyType
+  state           String?
+  district        String?
+  totalVoters     Int?
+  totalSeats      Int?
+  geoJson         Json?
+  demographics    Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  results         Result[]
+  
+  @@unique([electionId, code])
+  @@index([electionId])
+  @@index([state])
+}
+
+model Candidate {
+  id              String    @id @default(cuid())
+  name            String
+  party           String?
+  symbol          String?
+  color           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  results         Result[]
+  
+  @@index([party])
+}
+
+model Result {
+  id                String    @id @default(cuid())
+  electionId        String
+  election          Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  constituencyId    String
+  constituency      Constituency @relation(fields: [constituencyId], references: [id], onDelete: Cascade)
+  candidateId       String
+  candidate         Candidate  @relation(fields: [candidateId], references: [id])
+  votes             Int
+  percentage        Float
+  isWinner          Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@unique([electionId, constituencyId, candidateId])
+  @@index([electionId])
+  @@index([constituencyId])
+  @@index([candidateId])
+}
+
+model Insight {
+  id              String    @id @default(cuid())
+  electionId      String
+  election        Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  type            InsightType
+  title           String
+  content         String
+  confidence      Float?
+  metadata        Json?
+  status          InsightStatus @default(PENDING)
+  approvedBy      String?
+  approvedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([electionId])
+  @@index([type])
+  @@index([status])
+}
+
+model Dataset {
+  id              String    @id @default(cuid())
+  electionId      String
+  election        Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  name            String
+  type            DatasetType
+  url             String
+  size            Int
+  format          String
+  status          DatasetStatus @default(UPLOADING)
+  rowsProcessed   Int?
+  error           String?
+  uploadedAt      DateTime  @default(now())
+  processedAt     DateTime?
+  
+  @@index([electionId])
+  @@index([status])
+}
+
+model QueryHistory {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query           String
+  response        Json?
+  executionTime   Int?
+  success         Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id              String    @id @default(cuid())
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id])
+  electionId      String?
+  election        Election? @relation(fields: [electionId], references: [id])
+  action          String
+  resource        String
+  resourceId      String?
+  changes         Json?
+  ipAddress       String?
+  userAgent       String?
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([electionId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum ElectionType {
+  GENERAL
+  STATE
+  LOCAL
+  BY_ELECTION
+  REFERENDUM
+}
+
+enum ElectionStatus {
+  DRAFT
+  PROCESSING
+  READY
+  COMPLETED
+  ARCHIVED
+}
+
+enum ConstituencyType {
+  PARLIAMENTARY
+  ASSEMBLY
+  MUNICIPAL
+  COUNCIL
+}
+
+enum InsightType {
+  TREND
+  PREDICTION
+  ANOMALY
+  COMPARISON
+  DEMOGRAPHIC
+  GEOGRAPHIC
+}
+
+enum InsightStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum DatasetType {
+  RESULTS
+  VOTERS
+  DEMOGRAPHICS
+  GEOGRAPHIC
+  HISTORICAL
+}
+
+enum DatasetStatus {
+  UPLOADING
+  PROCESSING
+  COMPLETED
+  FAILED
+}

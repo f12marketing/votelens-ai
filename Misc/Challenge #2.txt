@@ -1,0 +1,1 @@
+Build a system that transforms election-related data into simple intuitive insights for better understanding and monitoring

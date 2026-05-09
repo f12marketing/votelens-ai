@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Background Colors */
+    --background: 0 0% 100%;
+    --background-primary: 0 0% 100%;
+    --background-secondary: 0 0% 98%;
+    --background-tertiary: 0 0% 96%;
+    --background-elevated: 0 0% 100%;
+    --background-overlay: 0 0% 0% / 80%;
+    
+    /* Text Colors */
+    --foreground: 222 47% 11%;
+    --text-primary: 222 47% 11%;
+    --text-secondary: 215 16% 47%;
+    --text-tertiary: 215 16% 65%;
+    --text-muted: 215 16% 80%;
+    --text-disabled: 215 16% 90%;
+    
+    /* Primary Colors */
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 221 83% 48%;
+    --primary-subtle: 221 83% 97%;
+    
+    /* Secondary Colors */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    
+    /* Accent Colors */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+    
+    /* Destructive Colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --destructive-subtle: 0 84% 96%;
+    
+    /* Success Colors */
+    --success: 142 76% 36%;
+    --success-subtle: 142 76% 96%;
+    
+    /* Warning Colors */
+    --warning: 38 92% 50%;
+    --warning-subtle: 38 92% 96%;
+    
+    /* Error Colors */
+    --error: 0 84% 60%;
+    --error-subtle: 0 84% 96%;
+    
+    /* AI Accent Colors */
+    --ai-accent: 263 70% 50%;
+    --ai-accent-subtle: 263 70% 96%;
+    
+    /* Insight Colors */
+    --insight-trend: 142 76% 36%;
+    --insight-anomaly: 38 92% 50%;
+    --insight-prediction: 263 70% 50%;
+    --insight-demographic: 221 83% 53%;
+    
+    /* Muted Colors */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    
+    /* Card Colors */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    
+    /* Popover Colors */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    /* Border Colors */
+    --border: 215 16% 90%;
+    --border-subtle: 215 16% 90%;
+    --border-default: 215 16% 80%;
+    --border-strong: 215 16% 65%;
+    
+    /* Input Colors */
+    --input: 215 16% 90%;
+    
+    /* Ring Colors */
+    --ring: 221 83% 53%;
+    
+    /* Radius */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Background Colors */
+    --background: 222 47% 11%;
+    --background-primary: 222 47% 11%;
+    --background-secondary: 222 47% 14%;
+    --background-tertiary: 222 47% 17%;
+    --background-elevated: 222 47% 20%;
+    --background-overlay: 0 0% 0% / 80%;
+    
+    /* Text Colors */
+    --foreground: 0 0% 100%;
+    --text-primary: 0 0% 100%;
+    --text-secondary: 0 0% 80%;
+    --text-tertiary: 0 0% 65%;
+    --text-muted: 0 0% 50%;
+    --text-disabled: 0 0% 40%;
+    
+    /* Primary Colors */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217 91% 55%;
+    --primary-subtle: 217 91% 15%;
+    
+    /* Secondary Colors */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Accent Colors */
+    --accent: 217 33% 17%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Destructive Colors */
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --destructive-subtle: 0 63% 15%;
+    
+    /* Success Colors */
+    --success: 142 76% 36%;
+    --success-subtle: 142 76% 15%;
+    
+    /* Warning Colors */
+    --warning: 38 92% 50%;
+    --warning-subtle: 38 92% 15%;
+    
+    /* Error Colors */
+    --error: 0 84% 60%;
+    --error-subtle: 0 84% 15%;
+    
+    /* AI Accent Colors */
+    --ai-accent: 263 70% 50%;
+    --ai-accent-subtle: 263 70% 15%;
+    
+    /* Insight Colors */
+    --insight-trend: 142 76% 36%;
+    --insight-anomaly: 38 92% 50%;
+    --insight-prediction: 263 70% 50%;
+    --insight-demographic: 217 91% 60%;
+    
+    /* Muted Colors */
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    
+    /* Card Colors */
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 100%;
+    
+    /* Popover Colors */
+    --popover: 222 47% 11%;
+    --popover-foreground: 0 0% 100%;
+    
+    /* Border Colors */
+    --border: 217 33% 25%;
+    --border-subtle: 215 16% 25%;
+    --border-default: 215 16% 30%;
+    --border-strong: 215 16% 40%;
+    
+    /* Input Colors */
+    --input: 217 33% 25%;
+    
+    /* Ring Colors */
+    --ring: 224 76% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

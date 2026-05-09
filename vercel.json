@@ -1,0 +1,59 @@
+{
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "framework": "vite",
+  "env": {
+    "VITE_API_URL": {
+      "description": "Backend API URL",
+      "value": "https://api.votelens.ai"
+    },
+    "VITE_FIREBASE_API_KEY": {
+      "description": "Firebase API Key",
+      "value": "@firebase_api_key"
+    },
+    "VITE_FIREBASE_AUTH_DOMAIN": {
+      "description": "Firebase Auth Domain",
+      "value": "@firebase_auth_domain"
+    },
+    "VITE_FIREBASE_PROJECT_ID": {
+      "description": "Firebase Project ID",
+      "value": "@firebase_project_id"
+    },
+    "VITE_FIREBASE_STORAGE_BUCKET": {
+      "description": "Firebase Storage Bucket",
+      "value": "@firebase_storage_bucket"
+    },
+    "VITE_FIREBASE_MESSAGING_SENDER_ID": {
+      "description": "Firebase Messaging Sender ID",
+      "value": "@firebase_messaging_sender_id"
+    },
+    "VITE_FIREBASE_APP_ID": {
+      "description": "Firebase App ID",
+      "value": "@firebase_app_id"
+    }
+  },
+  "regions": ["iad1"],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[phases.setup]
+nixPkgs = ["nodejs-18_x"]
+
+[phases.build]
+cmds = ["npm install", "npm run build"]
+
+[start]
+cmd = "npm run preview"
+
+[static]
+main = "dist"
+
+# Environment variables for production build
+[variables]
+NODE_ENV = "production"
+VITE_API_URL = "${{VITE_API_URL}}"
+VITE_APP_URL = "${{VITE_APP_URL}}"
