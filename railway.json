@@ -11,7 +11,7 @@
         "watchPaths": ["backend/src", "backend/package.json"]
       },
       "deploy": {
-        "startCommand": "npm run start:prod",
+        "startCommand": "node dist/app.js",
         "healthcheckPath": "/health",
         "healthcheckTimeout": 300,
         "restartPolicyType": "ON_FAILURE",
@@ -25,13 +25,8 @@
     "frontend": {
       "source": "frontend",
       "build": {
-        "builder": "NIXPACKS",
         "buildCommand": "npm install && npm run build",
         "watchPaths": ["frontend/src", "frontend/package.json"]
-      },
-      "deploy": {
-        "healthcheckPath": "/",
-        "healthcheckTimeout": 60
       }
     }
   }
