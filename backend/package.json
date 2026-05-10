@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app/server.ts",
     "build": "tsc",
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register src/app/server.ts",
-    "start:prod": "node -r ts-node/register/transpile-only -r tsconfig-paths/register src/app/server.ts",
+    "start": "node dist/app/server.js",
+    "start:prod": "node dist/app/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
